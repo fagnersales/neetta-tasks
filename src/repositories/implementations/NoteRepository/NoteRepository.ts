@@ -1,8 +1,8 @@
 import { User } from 'discord.js'
-import { Note, NoteRepositoryProtocol } from '../NoteRepositoryProtocol'
+import { Note, NoteRepositoryProtocol } from '../../NoteRepositoryProtocol'
 import { createNote } from './createNote'
 
-import { database } from '../../firebase'
+import { database } from '../../../firebase'
 
 export class NoteRepository implements NoteRepositoryProtocol {
   private noteReference = (user: User, id: string) => database.ref(`notes/${user.id}/${id}/`)

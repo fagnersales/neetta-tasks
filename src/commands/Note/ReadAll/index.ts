@@ -1,5 +1,5 @@
-import { Message, MessageEmbed } from "discord.js"
-import { NoteRepository } from "../../../repositories/implementations/NoteRepository"
+import { Message, MessageEmbed } from 'discord.js'
+import { NoteRepository } from '../../../repositories/implementations/NoteRepository/NoteRepository'
 import moment from 'moment'
 moment.locale('pt-br')
 

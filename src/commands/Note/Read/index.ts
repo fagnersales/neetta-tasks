@@ -1,6 +1,6 @@
 import { Message, MessageEmbed, MessageReaction } from 'discord.js'
-import { NoteRepository } from '../../../repositories/implementations/NoteRepository'
 import { Button } from 'discord.js-configurator'
+import { NoteRepository } from '../../../repositories/implementations/NoteRepository/NoteRepository'
 import moment from 'moment'
 moment.locale('pt-br')
 

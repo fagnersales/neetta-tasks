@@ -1,5 +1,5 @@
 import { Message, MessageCollector, TextChannel } from 'discord.js'
-import { NoteRepository } from '../../../repositories/implementations/NoteRepository'
+import { NoteRepository } from '../../../repositories/implementations/NoteRepository/NoteRepository'
 import { DiscordUI, Item, Page, Button } from 'discord.js-configurator'
 import { createConfigPage } from './NoteCreationUI'
 
