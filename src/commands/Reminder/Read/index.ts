@@ -1,4 +1,5 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, MessageEmbed, MessageReaction, User } from 'discord.js'
+import { Button } from 'discord.js-configurator'
 import moment from 'moment'
 import { ReminderRepository } from '../../../repositories/implementations/ReminderRepository/ReminderRepository'
 moment.locale('pt-br')
@@ -27,7 +28,23 @@ class ReminderReadCommand {
       embed.setFooter('Esse lembrete já expirou!')
     } 
     
-    message.channel.send(embed)
+    const messageSent = await message.channel.send(embed)
+
+    const removeReminderButton = new Button({
+      emoji: '🔥',
+      message: messageSent,
+      user: message.author
+    }, {
+      act: removeReminderButtonAction
+    })
+
+    async function removeReminderButtonAction(messageReaction: MessageReaction, _user: User) {
+      messageReaction.remove()
+      await reminderRepository.remove(id) 
+      message.channel.send('Lembrete removido com sucesso!')
+    }
+    
+    removeReminderButton.activate()
   }
 }
 
