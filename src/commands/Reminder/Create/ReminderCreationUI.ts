@@ -1,6 +1,6 @@
-import { MessageEmbed } from 'discord.js'
 import { Page } from 'discord.js-configurator'
 import ms from 'ms'
+import { stilizeReminderUI } from '../stilizeReminderUI'
 
 export const createConfigPage = (): Page => {
   const configPage = new Page([
@@ -13,21 +13,9 @@ export const createConfigPage = (): Page => {
     },
     { key: 'repeatDaily', name: 'diariamente', instanceOf: 'S/N', value: 'Você quer que este lembrete repita diariamente?', required: false }
   ], {
-    stilize: async () => {
-      const embed = new MessageEmbed()
-        .setColor('RANDOM')
-        .setTitle('Salvando seu novo lembrete...')
-
-      const stringToCodeBlock = (str: string, code: 'diff' | 'js') => {
-        return `\`\`\`${code}\n${str}\`\`\``
-      }
-
-      embed.setDescription(stringToCodeBlock(configPage.items.map(item => 
-        `${item.isFulfilled ? '+' : '-'} ${item.name}${item.isRequired ? '*' : ''} (${item.instanceOf}) => ${item.value}`
-        .trim()).join('\n').trim(), 'diff')
-      )
-
-      return embed
+    stilize: (data) => {
+      const stilize = stilizeReminderUI(configPage, data)
+      return stilize
     }
   })
 

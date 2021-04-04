@@ -1,7 +1,9 @@
-import { Message, MessageEmbed, MessageReaction, User } from 'discord.js'
-import { Button } from 'discord.js-configurator'
+import { Message, MessageCollector, MessageEmbed, MessageReaction, TextChannel, User } from 'discord.js'
+import { Button, DiscordUI } from 'discord.js-configurator'
 import moment from 'moment'
 import { ReminderRepository } from '../../../repositories/implementations/ReminderRepository/ReminderRepository'
+import { Reminder } from '../../../repositories/ReminderRepositoryProtocol'
+import { createEditPage } from './ReminderEditUI'
 moment.locale('pt-br')
 
 class ReminderReadCommand {
@@ -37,6 +39,16 @@ class ReminderReadCommand {
     }, {
       act: removeReminderButtonAction
     })
+    
+    const editPage = createEditPage(reminder)
+
+    const editReminderButton = new Button({
+      emoji: '📝',
+      message: messageSent,
+      user: message.author
+    }, {
+      act: editReminderButtonAction
+    })
 
     async function removeReminderButtonAction(messageReaction: MessageReaction, _user: User) {
       messageReaction.remove()
@@ -45,6 +57,41 @@ class ReminderReadCommand {
     }
     
     removeReminderButton.activate()
+
+    async function editReminderButtonAction(messageReaction: MessageReaction, _user: User) {
+      const discordUI = new DiscordUI({
+        channel: message.channel as TextChannel,
+        user: message.author,
+        pages: [editPage]
+      })
+
+      discordUI.on('start', (UIMessage: Message, collector: MessageCollector) => {
+        const saveButton = new Button({
+          message: UIMessage,
+          user: message.author,
+          emoji: '✅'
+        }, {
+          act: saveButtonAction
+        })
+
+        saveButton.activate()
+
+        async function saveButtonAction(messageReaction: MessageReaction, _user: User) {
+          const [newReminderData] = discordUI.toJSON() as [Reminder]
+
+          const newReminder = { ...reminder, ...newReminderData }
+
+          await reminderRepository.remove(newReminder.id)
+          await reminderRepository.remind(newReminder.at, newReminder.what, newReminder.options, newReminder.id)
+
+          messageReaction.message.delete()
+
+          await message.channel.send('Lembrete atualizado com sucesso!')
+        }
+      })
+    }
+
+    editReminderButton.activate()
   }
 }
 
