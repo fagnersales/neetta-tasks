@@ -58,7 +58,7 @@ class ReminderReadCommand {
     
     removeReminderButton.activate()
 
-    async function editReminderButtonAction(messageReaction: MessageReaction, _user: User) {
+    async function editReminderButtonAction(_messageReaction: MessageReaction, _user: User) {
       const discordUI = new DiscordUI({
         channel: message.channel as TextChannel,
         user: message.author,
