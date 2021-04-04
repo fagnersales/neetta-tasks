@@ -1,11 +1,9 @@
-import { Message } from 'discord.js'
+import { reminderClosestsCommand } from './Closests'
+import { reminderCreateCommand } from './Create'
+import { reminderReadCommand } from './Read'
 
-class ReminderCommand {
-  async execute(message: Message) {
-    message.reply('Lembrete...')
-  }
+export const commands = {
+  create: reminderCreateCommand,
+  read: reminderReadCommand,
+  closests: reminderClosestsCommand
 }
-
-const reminderCommand = new ReminderCommand()
-
-export { reminderCommand }

@@ -1,8 +1,11 @@
 import 'dotenv/config'
 import './firebase'
 import { Client } from 'discord.js'
-import { reminderCommand } from './commands/Reminder'
+import { commands as ReminderCommands } from './commands/Reminder'
 import { commands as NoteCommands } from './commands/Note'
+import { StartReminders } from './structures/Reminder/StartReminders'
+import { ReminderRepository } from './repositories/implementations/ReminderRepository/ReminderRepository'
+import { RemindersRepository } from './repositories/implementations/RemindersRepository/RemindersRepository'
 
 const client = new Client()
 
@@ -17,8 +20,15 @@ client.on('message', (message) => {
   const commandName = messageSplitted[0].slice(prefix.length)
   const args = messageSplitted.slice(1)
 
-  if (['lembrete'].includes(commandName.toLowerCase())) {
-    return reminderCommand.execute(message)
+  if (['lembrar', 'lembrete'].includes(commandName.toLowerCase())) {
+    if (args.length) {
+      return ReminderCommands.read.execute(message, args)
+    }
+    return ReminderCommands.create.execute(message)
+  }
+
+  if (['lembretes'].includes(commandName.toLowerCase())) {
+    return ReminderCommands.closests.execute(message, args)
   }
   
   if (['anotar'].includes(commandName.toLowerCase())) {
@@ -33,5 +43,9 @@ client.on('message', (message) => {
     }
   }
 })
+
+const startReminders = new StartReminders(client, new RemindersRepository())
+
+startReminders.execute()
 
 client.login(process.env.TOKEN)

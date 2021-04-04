@@ -11,9 +11,9 @@ export class ReminderRepository implements ReminderRepositoryProtocol {
     private user: User
   ) {}
 
-  async remind (In: number, what: string, options?: Partial<Reminder['options']>, inferID?: string): Promise<Reminder> {
+  async remind (at: string, what: string, options?: Partial<Reminder['options']>, inferID?: string): Promise<Reminder> {
     const id = inferID ?? String(Math.floor(Math.random() * 100000))
-    const reminder = createReminder(id, In, what, options)
+    const reminder = createReminder(id, at, what, options)
 
     const reminderReference = this.reminderReference(this.user, id)
 
@@ -39,7 +39,7 @@ export class ReminderRepository implements ReminderRepositoryProtocol {
 
     const reminders = Object.values(remindersObject) as Reminder[]
     
-    const closestReminder = reminders.sort((reminderA, reminderB) => reminderA.In - reminderB.In)[0]
+    const closestReminder = reminders.sort((reminderA, reminderB) => (+reminderA.at) - (+reminderB.at))[0]
 
     return closestReminder
   }
@@ -52,8 +52,8 @@ export class ReminderRepository implements ReminderRepositoryProtocol {
     if (!remindersObject) return []
   
     const reminders = Object.values(remindersObject) as Reminder[]
-    
-    const closestReminders = reminders.sort((reminderA, reminderB) => reminderA.In - reminderB.In)
+
+    const closestReminders = reminders.sort((reminderA, reminderB) => (+reminderA.at) - (+reminderB.at))
   
     return closestReminders.slice(0, amount)
   }

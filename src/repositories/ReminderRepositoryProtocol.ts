@@ -1,7 +1,7 @@
 export interface Reminder {
   id: string
   what: string
-  In: number
+  at: string
   options: {
     repeatDaily: boolean
   }
@@ -9,7 +9,7 @@ export interface Reminder {
 
 export interface ReminderRepositoryProtocol {
   /** Saves a reminder at the database */
-  remind: (In: number, what: string, options?: Partial<Reminder['options']>, inferID?: string) => Promise<Reminder>
+  remind: (at: string, what: string, options?: Partial<Reminder['options']>, inferID?: string) => Promise<Reminder>
 
   /** Gets a reminder by its ID */
   get: (id: string) => Promise<Reminder | null>
