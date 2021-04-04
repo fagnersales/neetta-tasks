@@ -2,6 +2,7 @@ import { Message, MessageCollector, TextChannel } from 'discord.js'
 import { NoteRepository } from '../../../repositories/implementations/NoteRepository/NoteRepository'
 import { DiscordUI, Item, Page, Button } from 'discord.js-configurator'
 import { createConfigPage } from './NoteCreationUI'
+import { CommandHelp } from '../../interfaces'
 
 class NoteWriteCommand {
   async execute(message: Message, args: string[]) {
@@ -44,7 +45,17 @@ class NoteWriteCommand {
           fulfilledButton.deactivate()
         })
     })
+  }
 
+  get help(): CommandHelp {
+    const names = ['anotar']
+
+    return {
+      description: 'Cria uma nova anotação',
+      names,
+      worksAtDM: true,
+      examples: [`<prefixo>${names[0]}`]
+    }
   }
 }
 

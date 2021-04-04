@@ -2,6 +2,7 @@ import { Message, MessageEmbed, MessageReaction } from 'discord.js'
 import { Button } from 'discord.js-configurator'
 import { NoteRepository } from '../../../repositories/implementations/NoteRepository/NoteRepository'
 import moment from 'moment'
+import { CommandHelp } from '../../interfaces'
 moment.locale('pt-br')
 
 class NoteReadCommand {
@@ -9,6 +10,10 @@ class NoteReadCommand {
     const noteRepository = NoteRepository.create(message.author)
 
     const [id] = args
+
+    if (!id) {
+      return message.channel.send('Você precisa informar o ID da anotação!')
+    }
 
     const noteOrNull = await noteRepository.read(id)
 
@@ -67,7 +72,17 @@ class NoteReadCommand {
         }
       })
     }
+  }
 
+  get help(): CommandHelp {
+    const names = ['anotação']
+
+    return {
+      description: 'Mostra detalhadamente uma anotação',
+      names,
+      worksAtDM: true,
+      examples: [`<prefixo>${names[0]} 500`]
+    }
   }
 }
 

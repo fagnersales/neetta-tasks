@@ -4,6 +4,7 @@ import ms from 'ms'
 import { ReminderRepository } from '../../../repositories/implementations/ReminderRepository/ReminderRepository'
 import { Reminder } from '../../../repositories/ReminderRepositoryProtocol'
 import { handleUserReminders } from '../../../structures/Reminder/Reminder'
+import { CommandHelp } from '../../interfaces'
 import { createConfigPage } from './ReminderCreationUI'
 
 class ReminderCreateCommand {
@@ -49,6 +50,17 @@ class ReminderCreateCommand {
           fulfilledButton.deactivate()
         })
     })
+  }
+
+  get help(): CommandHelp {
+    const names = ['lembrar']
+
+    return {
+      description: 'Cria um novo lembrete',
+      names,
+      worksAtDM: true,
+      examples: [`<prefixo>${names[0]}`]
+    }
   }
 }
 

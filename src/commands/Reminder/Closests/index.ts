@@ -1,6 +1,7 @@
 import { Message } from 'discord.js'
 import { ReminderRepository } from '../../../repositories/implementations/ReminderRepository/ReminderRepository'
 import moment from 'moment'
+import { CommandHelp } from '../../interfaces'
 moment.locale('pt-br')
 
 export class ReminderClosestsCommand {
@@ -20,6 +21,17 @@ export class ReminderClosestsCommand {
       .map((reminder) => `${reminder.id}) ${reminder.what} \`${moment(+reminder.at).fromNow()}\``)
 
     message.channel.send(resolvedClosestReminders.join('\n'))
+  }
+
+  get help(): CommandHelp {
+    const names = ['lembretes']
+
+    return {
+      description: 'Mostra os próximos lembretes',
+      names,
+      worksAtDM: true,
+      examples: [`<prefixo>${names[0]}`, `<prefixo>${names[0]} 5`]
+    }
   }
 }
 

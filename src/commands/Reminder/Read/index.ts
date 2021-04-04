@@ -3,6 +3,7 @@ import { Button, DiscordUI } from 'discord.js-configurator'
 import moment from 'moment'
 import { ReminderRepository } from '../../../repositories/implementations/ReminderRepository/ReminderRepository'
 import { Reminder } from '../../../repositories/ReminderRepositoryProtocol'
+import { CommandHelp } from '../../interfaces'
 import { createEditPage } from './ReminderEditUI'
 moment.locale('pt-br')
 
@@ -11,6 +12,10 @@ class ReminderReadCommand {
     const reminderRepository = ReminderRepository.create(message.author)
 
     const [id] = args
+
+    if (!id) {
+      return message.channel.send('Você precisa informar o ID do lembrete a ser lido!')
+    }
 
     const reminderOrNull = await reminderRepository.get(id)
 
@@ -92,6 +97,17 @@ class ReminderReadCommand {
     }
 
     editReminderButton.activate()
+  }
+
+  get help(): CommandHelp {
+    const names = ['lembrete']
+
+    return {
+      description: 'Mostra um lembrete com mais detalhes a partir do ID',
+      names,
+      worksAtDM: true,
+      examples: [`<prefixo>${names[0]} 44220`]
+    }
   }
 }
 

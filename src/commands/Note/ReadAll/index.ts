@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { NoteRepository } from '../../../repositories/implementations/NoteRepository/NoteRepository'
 import moment from 'moment'
+import { CommandHelp } from '../../interfaces'
 moment.locale('pt-br')
 
 class NoteReadAllCommand {
@@ -23,9 +24,20 @@ class NoteReadAllCommand {
         notes
           .sort((noteA, noteB) => noteA.editedAt - noteB.editedAt)
           .map(note => `(${note.id}) - ${note.content.substring(0, 30) + '...'}`).join('\n'), 'diff'))
-    .setFooter('Utilize !anotação (id) para ler todo o conteúdo!')
+    .setFooter(`Utilize <prefixo>${this.help.names[0]} (id) para ler todo o conteúdo!`)
 
     message.channel.send(embed)
+  }
+
+  get help(): CommandHelp {
+    const names = ['anotações']
+
+    return {
+      description: 'Mostra todas as anotações',
+      names,
+      worksAtDM: true,
+      examples: [`<prefixo>${names[0]}`]
+    }
   }
 }
 

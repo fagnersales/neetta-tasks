@@ -20,27 +20,28 @@ client.on('message', (message) => {
   const commandName = messageSplitted[0].slice(prefix.length)
   const args = messageSplitted.slice(1)
 
-  if (['lembrar', 'lembrete'].includes(commandName.toLowerCase())) {
-    if (args.length) {
-      return ReminderCommands.read.execute(message, args)
-    }
+  if (ReminderCommands.create.help.names.includes(commandName.toLowerCase())) {
     return ReminderCommands.create.execute(message)
   }
 
-  if (['lembretes'].includes(commandName.toLowerCase())) {
+  if (ReminderCommands.read.help.names.includes(commandName.toLowerCase())) {
+      return ReminderCommands.read.execute(message, args)
+  }
+
+  if (ReminderCommands.closests.help.names.includes(commandName.toLowerCase())) {
     return ReminderCommands.closests.execute(message, args)
   }
   
-  if (['anotar'].includes(commandName.toLowerCase())) {
+  if (NoteCommands.write.help.names.includes(commandName.toLowerCase())) {
     return NoteCommands.write.execute(message, args)
   }
 
-  if (['anotação', 'anotaçao', 'anotacao', 'anotações', 'anotaçoes', 'anotacoes'].includes(commandName.toLowerCase())) {
-    if (args.length) {
-      return NoteCommands.read.execute(message, args)
-    } else {
-      return NoteCommands.readAll.execute(message)
-    }
+  if (NoteCommands.read.help.names.includes(commandName.toLowerCase())) {
+    return NoteCommands.read.execute(message, args)
+  }
+
+  if (NoteCommands.readAll.help.names.includes(commandName.toLowerCase())) {
+    return NoteCommands.readAll.execute(message)
   }
 })
 
