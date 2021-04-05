@@ -3,8 +3,8 @@ import './firebase'
 import { Client } from 'discord.js'
 import { commands as ReminderCommands } from './commands/Reminder'
 import { commands as NoteCommands } from './commands/Note'
+import { commandsCommand } from './commands'
 import { StartReminders } from './structures/Reminder/StartReminders'
-import { ReminderRepository } from './repositories/implementations/ReminderRepository/ReminderRepository'
 import { RemindersRepository } from './repositories/implementations/RemindersRepository/RemindersRepository'
 
 const client = new Client()
@@ -14,11 +14,15 @@ const prefix = process.env.PREFIX ?? '!'
 client.on('ready', () => console.log('Ready to work!'))
 
 client.on('message', (message) => {
-  if (!message.content.startsWith(prefix.toLowerCase())) return null
+  if (message.author.bot || !message.content.startsWith(prefix.toLowerCase())) return null
 
   const messageSplitted = message.content.split(' ')
   const commandName = messageSplitted[0].slice(prefix.length)
   const args = messageSplitted.slice(1)
+
+  if (commandsCommand.help.names.includes(commandName.toLowerCase())) {
+    return commandsCommand.execute(message, args)
+  }
 
   if (ReminderCommands.create.help.names.includes(commandName.toLowerCase())) {
     return ReminderCommands.create.execute(message)
