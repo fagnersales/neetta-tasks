@@ -1156,10 +1156,10 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-discord.js-configurator@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/discord.js-configurator/-/discord.js-configurator-1.3.1.tgz#53956fcce5e2546d1d37408a20bbb79d77ab5a53"
-  integrity sha512-LGWgc3mCAfUBVQN9kxraOWJTHli92CmLCkYsiSK6MMHuUSbjiER2rh0ItxLjXiMYRnR73woENQq3EWDkstbcMQ==
+discord.js-configurator@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/discord.js-configurator/-/discord.js-configurator-1.4.2.tgz#13f1a57db7f5fdb01c76c09a536f743a9e6e5f9e"
+  integrity sha512-ONx8JcHo3+3x1qq1z2PJL9LKJmy56lubuPGvM81IlAd71e0v9wuIUXPWt3Hf/sSQS6g+uPRZCjfDq+bcj3Fdcg==
   dependencies:
     discord.js "^12.5.3"
 
