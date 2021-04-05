@@ -1,6 +1,7 @@
 import { Message, MessageCollector, MessageEmbed, MessageReaction, TextChannel, User } from 'discord.js'
 import { Button, DiscordUI } from 'discord.js-configurator'
 import moment from 'moment'
+import ms from 'ms'
 import { ReminderRepository } from '../../../repositories/implementations/ReminderRepository/ReminderRepository'
 import { Reminder } from '../../../repositories/ReminderRepositoryProtocol'
 import { CommandHelp } from '../../interfaces'
@@ -84,7 +85,14 @@ class ReminderReadCommand {
         async function saveButtonAction(messageReaction: MessageReaction, _user: User) {
           const [newReminderData] = discordUI.toJSON() as [Reminder]
 
-          const newReminder = { ...reminder, ...newReminderData }
+          const newReminder: Reminder = {
+            id: reminder.id,
+            options: {
+              repeatDaily: newReminderData.options?.repeatDaily ?? reminder.options?.repeatDaily
+            },
+            at: newReminderData.at ? String(Date.now() + (ms(newReminderData.at))) : reminder.at,
+            what: newReminderData.what ?? reminder.what
+          }
 
           await reminderRepository.remove(newReminder.id)
           await reminderRepository.remind(newReminder.at, newReminder.what, newReminder.options, newReminder.id)
